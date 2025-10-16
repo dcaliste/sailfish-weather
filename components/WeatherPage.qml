@@ -100,7 +100,7 @@ Page {
             height: weatherForecastList.height
 
             Rectangle {
-                visible: down || root.currentIndex == model.index
+                visible: down || root.currentIndex === model.index
                 anchors.fill: parent
                 gradient: Gradient {
                     GradientStop {

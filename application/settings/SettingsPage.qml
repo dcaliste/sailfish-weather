@@ -22,8 +22,8 @@ ApplicationSettings {
         defaultValue: "open_weather"
     }
     ConfigurationValue {
-       id: weatherProviderApiKey
-       key: "/sailfish/weather/provider_api_key"
+       id: openWeatherProviderApiKey
+       key: "/sailfish/weather/open_weather_provider_api_key"
        defaultValue: ""
     }
 
@@ -94,8 +94,15 @@ ApplicationSettings {
         visible: weatherDataProvider.value !== "foreca"
         placeholderText: "Enter Api key..."
         onAccepted: {
-            weatherProviderApiKey.value = text
             console.log("Entered Api key:", text)
+            switch (weatherDataProvider.value) {
+            case 'open-weather':
+                openWeatherProviderApiKey.value = text
+                break;
+            default:
+                console.log('Weather Provider doesn\'t support API Key')
+            }
+
         }
     }
 }

@@ -9,8 +9,8 @@ import QtQuick 2.2
 import Nemo.Configuration 1.0
 
 ConfigurationValue {
-   id: weatherProviderApiKey
-   key: "/sailfish/weather/provider_api_key"
+   id: openWeatherProviderApiKey
+   key: "/sailfish/weather/open_weather_provider_api_key"
    defaultValue: ""
 }
 

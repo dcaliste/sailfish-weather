@@ -18,11 +18,16 @@ ConfigurationValue {
     property string token;
 
     function fetchToken(model) {
-        if (value === 'foreca') {
+        switch (value) {
+        case 'foreca':
             return ForecaToken.fetchToken(model)
+        case 'open-weather':
+            model.token = OpenWeatherProviderApiKey.value;
+            return true;
+        default:
+            console.log("Wether Provider doesn't support fetching token.")
+            return false;
         }
-        model.token = WeatherProviderApiKey.value;
-        return true;
     }
 
     function getUriTokenParam() {

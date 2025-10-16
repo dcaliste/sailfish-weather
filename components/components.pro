@@ -60,5 +60,5 @@ PRE_TARGETDEPS += translations engineering_english
 INSTALLS += target import translations_install engineering_english_install
 
 DISTFILES += \
-    WeatherProvider.qml \
-    WeatherProviderApiKey.qml
+    OpenWeatherProviderApiKey.qml \
+    WeatherProvider.qml

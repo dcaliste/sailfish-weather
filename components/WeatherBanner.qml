@@ -191,7 +191,7 @@ ListItem {
                             height: dailyForecastList.height
                             DailyForecastItem {
                                 highlighted: weatherBanner.highlighted
-                                onHeightChanged: if (model.index == 0) dailyForecastList.itemHeight = height
+                                onHeightChanged: if (model.index === 0) dailyForecastList.itemHeight = height
                             }
                         }
                     }
@@ -263,7 +263,7 @@ ListItem {
                             HourlyForecastItem {
                                 hourMode: hourlyForecastList.hourMode
                                 highlighted: weatherBanner.highlighted
-                                onHeightChanged: if (model.index == 0) hourlyForecastList.itemHeight = height
+                                onHeightChanged: if (model.index === 0) hourlyForecastList.itemHeight = height
                             }
                         }
                     }
