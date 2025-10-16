@@ -16,6 +16,16 @@ ApplicationSettings {
         key: "/sailfish/weather/temperature_unit"
         defaultValue: "celsius"
     }
+    ConfigurationValue {
+        id: weatherDataProvider
+        key: "/sailfish/weather/data_provider"
+        defaultValue: "open_weather"
+    }
+    ConfigurationValue {
+       id: weatherProviderApiKey
+       key: "/sailfish/weather/provider_api_key"
+       defaultValue: ""
+    }
 
     ComboBox {
         //% "Temperature units"
@@ -45,6 +55,47 @@ ApplicationSettings {
                 text: qsTrId("weather_settings-me-fahrenheit")
                 onClicked: temperatureUnitValue.value = "fahrenheit"
             }
+        }
+    }
+
+    ComboBox {
+        //% "Weather Provider"
+        label: qsTrId("weather_settings-la-weather-provider")
+        Component.onCompleted: {
+            switch (weatherDataProvider.value) {
+            case "foreca":
+                currentIndex = 0
+                break
+            case "open_weather":
+                currentIndex = 1
+                break
+            default:
+                console.log("WeatherSettings: Invalid weather providervalue", weatherDataProvider.value)
+                break
+            }
+        }
+
+        menu: ContextMenu {
+            MenuItem {
+                //% "Foreca"
+                text: qsTrId("weather_settings-me-foreca")
+                onClicked: weatherDataProvider.value = "foreca"
+            }
+            MenuItem {
+                //% "Open Weather"
+                text: qsTrId("weather_settings-me-open-weather")
+                onClicked: weatherDataProvider.value = "open-weather"
+            }
+        }
+    }
+
+    TextField {
+        id: providerApiKeyTextField
+        visible: weatherDataProvider.value !== "foreca"
+        placeholderText: "Enter Api key..."
+        onAccepted: {
+            weatherProviderApiKey.value = text
+            console.log("Entered Api key:", text)
         }
     }
 }

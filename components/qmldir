@@ -27,3 +27,5 @@ ProviderDisclaimer 1.0 ProviderDisclaimer.qml
 WeatherBanner 1.0 WeatherBanner.qml
 WeatherIndicator 1.0 WeatherIndicator.qml
 WeatherForecastList 1.0 WeatherForecastList.qml
+WeatherProvider 1.0 WeatherProvider.qml
+WeatherProviderApiKey 1.0 WeatherProviderApiKey.qml

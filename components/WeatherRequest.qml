@@ -5,7 +5,6 @@
 
 import QtQuick 2.0
 import Sailfish.Weather 1.0
-import "ForecaToken.js" as Token
 
 QtObject {
     id: root
@@ -22,7 +21,7 @@ QtObject {
     onActiveChanged: if (active) attemptReload()
     onOnlineChanged: if (online) attemptReload()
     onSourceChanged: if (source.length > 0) attemptReload()
-    Component.onCompleted: Token.fetchToken(this)
+    Component.onCompleted: WeatherProvider.fetchToken(this)
 
     // Note: this is overridden in WeatherModel and WeatherForecastModel
     function updateAllowed() {
@@ -43,7 +42,7 @@ QtObject {
     function reload(userRequested) {
         if (online && source.length > 0) {
             status = Weather.Loading
-            if (Token.fetchToken(root)) {
+            if (WeatherProvider.fetchToken(root)) {
                 sendRequest()
             }
         } else if (source.length === 0) {
@@ -66,7 +65,7 @@ QtObject {
 
             // Send the proper header information along with the request
             request.onreadystatechange = function() { // Call a function when the state changes.
-                if (request.readyState == XMLHttpRequest.DONE) {
+                if (request.readyState === XMLHttpRequest.DONE) {
                     timeout.stop()
                     if (request.status === 200) {
                         var data = JSON.parse(request.responseText)
@@ -79,7 +78,7 @@ QtObject {
                     request = undefined
                 }
             }
-            request.open("GET", source + "&token=" + token)
+            request.open("GET", source + WeatherProvider.getUriTokenParam() + token)
             request.send()
         }
     }
