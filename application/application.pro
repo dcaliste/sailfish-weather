@@ -9,7 +9,7 @@ CONFIG += warn_on
 
 SOURCES += weather.cpp
 
-qml.files = weather.qml cover model pages
+qml.files = weather.qml cover model pages ../LICENSES
 desktop.files = sailfish-weather.desktop
 
 dbus_service.files = org.sailfishos.weather.service

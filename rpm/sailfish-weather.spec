@@ -75,7 +75,7 @@ if [ $1 -eq 2 ]; then
 fi
 
 %files
-%license LICENSES/BSD-3-Clause.txt
+%license %{_datadir}/sailfish-weather/LICENSES/BSD-3-Clause.txt
 %{_datadir}/applications/*.desktop
 %{_datadir}/sailfish-weather/*
 %{_bindir}/sailfish-weather
