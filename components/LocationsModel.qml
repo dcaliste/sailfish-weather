@@ -30,9 +30,9 @@ ListModel {
             }
         }
 
-        source: filter.length > 0 ? "https://pfa.foreca.com/api/v1/location/search/" + filter.toLowerCase() + "&lang=" + language : ""
+        source: filter.length > 0 ? "https://nominatim.openstreetmap.org/search?format=json&accept-language=" + language + "&city=" + filter.toLowerCase() : ""
         onRequestFinished: {
-            var locations = result["locations"]
+            var locations = result
             if (result.length === 0 || locations === undefined) {
                 status = Weather.Error
             } else {
@@ -40,10 +40,13 @@ ListModel {
                     root.remove(locations.length)
                 }
                 for (var i = 0; i < locations.length; i++) {
+                    var location = locations[i]
+                    location.id = location.place_id
+                    location.country = location.display_name
                     if (i < root.count) {
-                        root.set(i, locations[i])
+                        root.set(i, location)
                     } else {
-                        root.append(locations[i])
+                        root.append(location)
                     }
                 }
             }

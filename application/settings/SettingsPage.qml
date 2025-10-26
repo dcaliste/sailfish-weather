@@ -19,12 +19,7 @@ ApplicationSettings {
     ConfigurationValue {
         id: weatherDataProvider
         key: "/sailfish/weather/data_provider"
-        defaultValue: "open_weather"
-    }
-    ConfigurationValue {
-       id: openWeatherProviderApiKey
-       key: "/sailfish/weather/open_weather_provider_api_key"
-       defaultValue: ""
+        defaultValue: "foreca"
     }
 
     ComboBox {
@@ -62,7 +57,8 @@ ApplicationSettings {
         //% "Weather Provider"
         label: qsTrId("weather_settings-la-weather-provider")
         Component.onCompleted: {
-            switch (weatherDataProvider.value) {
+            var splitValues = weatherDataProvider.value.split(':')
+            switch (splitValues[0]) {
             case "foreca":
                 currentIndex = 0
                 break
@@ -70,7 +66,7 @@ ApplicationSettings {
                 currentIndex = 1
                 break
             default:
-                console.log("WeatherSettings: Invalid weather providervalue", weatherDataProvider.value)
+                console.log("WeatherSettings: Invalid weather provider value", weatherDataProvider.value)
                 break
             }
         }
@@ -84,7 +80,7 @@ ApplicationSettings {
             MenuItem {
                 //% "Open Weather"
                 text: qsTrId("weather_settings-me-open-weather")
-                onClicked: weatherDataProvider.value = "open-weather"
+                onClicked: weatherDataProvider.value = "open_weather"
             }
         }
     }
@@ -92,17 +88,11 @@ ApplicationSettings {
     TextField {
         id: providerApiKeyTextField
         visible: weatherDataProvider.value !== "foreca"
+        text: weatherDataProvider.value.split(':')[1]
         placeholderText: "Enter Api key..."
-        onAccepted: {
+        onTextChanged: {
             console.log("Entered Api key:", text)
-            switch (weatherDataProvider.value) {
-            case 'open-weather':
-                openWeatherProviderApiKey.value = text
-                break;
-            default:
-                console.log('Weather Provider doesn\'t support API Key')
-            }
-
+            weatherDataProvider.value = 'open_weather:' + text;
         }
     }
 }

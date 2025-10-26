@@ -14,7 +14,7 @@ var pendingTokenRequests = []
 var lastUpdate = new Date()
 
 function fetchToken(model) {
-    if (model == undefined) {
+    if (model === undefined) {
         console.warn("Token requested for undefined or null model")
         return false
     }
@@ -46,8 +46,8 @@ function fetchToken(model) {
 
             // Send the proper header information along with the tokenRequest
             tokenRequest.onreadystatechange = function() { // Call a function when the state changes.
-                if (tokenRequest.readyState == XMLHttpRequest.DONE) {
-                    if (tokenRequest.status == 200) {
+                if (tokenRequest.readyState === XMLHttpRequest.DONE) {
+                    if (tokenRequest.status === 200) {
                         var json = JSON.parse(tokenRequest.responseText)
                         token = json["access_token"]
                     } else {

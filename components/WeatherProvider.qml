@@ -11,18 +11,18 @@ import Nemo.Configuration 1.0
 import "ForecaToken.js" as ForecaToken
 
 ConfigurationValue {
-    id: weatherDataProvider
     key: "/sailfish/weather/data_provider"
-    defaultValue: "open_weather"
+    defaultValue: "foreca"
 
     property string token;
 
     function fetchToken(model) {
-        switch (value) {
+        var splitValues = value.split(':');
+        switch (splitValues[0]) {
         case 'foreca':
             return ForecaToken.fetchToken(model)
-        case 'open-weather':
-            model.token = OpenWeatherProviderApiKey.value;
+        case 'open_weather':
+            model.token = splitValues[1];
             return true;
         default:
             console.log("Wether Provider doesn't support fetching token.")
@@ -41,4 +41,6 @@ ConfigurationValue {
             return '';
         }
     }
+
+//    function get
 }
