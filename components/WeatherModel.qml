@@ -20,7 +20,7 @@ WeatherRequest {
 
         active: false
         source: requestedLocationId > 0
-                ? "https://pfa.foreca.com/api/v1/observation/latest/" + requestedLocationId
+                ? WeatherProvider.latestObservation(weatherJson)
                 : ""
         onRequestFinished: {
             if (!weatherJson) return
@@ -44,7 +44,7 @@ WeatherRequest {
         }
     }
 
-    source: locationId > 0 ? "https://pfa.foreca.com/api/v1/current/" + locationId : ""
+    source: locationId > 0 ? WeatherProvider.currentWeatherUrl(weather) : ""
 
     function updateAllowed() {
         return status === Weather.Null || status === Weather.Error || WeatherModel.updateAllowed()
@@ -62,6 +62,9 @@ WeatherRequest {
             weather.temperature = current.temperature
             weather.feelsLikeTemperature = current.feelsLikeTemp
             var json = {
+                "locationId": current.locationId,
+                "lat": current.lat,
+                "lon": current.lon,
                 "temperature": weather.temperature,
                 "feelsLikeTemperature": weather.feelsLikeTemperature,
                 "weatherType": weather.weatherType,

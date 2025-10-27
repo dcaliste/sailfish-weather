@@ -13,7 +13,7 @@ BackgroundItem {
     property int topMargin: Theme.paddingLarge
     property int bottomMargin: 2*Theme.paddingLarge
 
-    onClicked: if (weather) Qt.openUrlExternally("http://foreca.mobi/spot.php?l=" + weather.locationId)
+    onClicked: if (weather) Qt.openUrlExternally(WeatherProvider.externalUrl() + weather.locationId)
     height: column.height + topMargin + bottomMargin
     Column {
         id: column

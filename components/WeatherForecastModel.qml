@@ -36,9 +36,7 @@ ListModel {
     readonly property WeatherRequest model: WeatherRequest {
         id: model
 
-        source: root.locationId > 0 ?
-                    "https://pfa.foreca.com/api/v1/forecast/"
-                    + (hourly ? "hourly/" : "daily/") + root.locationId : ""
+        source: root.locationId > 0 ? WeatherProvider.forecastUrl(weather, hourly) : ""
 
         // update allowed every half hour for hourly weather, every 3 hours for daily weather
         property int maxUpdateInterval: hourly ? 30*60*1000 : 180*60*1000

@@ -25,6 +25,8 @@ class SavedWeathersModel: public QAbstractListModel
 public:
     enum Roles {
         LocationId = Qt::UserRole,
+        Lat,
+        Lon,
         Status,
         Station,
         City,

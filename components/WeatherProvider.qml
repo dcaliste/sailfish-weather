@@ -17,12 +17,11 @@ ConfigurationValue {
     property string token;
 
     function fetchToken(model) {
-        var splitValues = value.split(':');
-        switch (splitValues[0]) {
+        switch (getProviderName()) {
         case 'foreca':
             return ForecaToken.fetchToken(model)
         case 'open_weather':
-            model.token = splitValues[1];
+            model.token = getApiKey();
             return true;
         default:
             console.log("Wether Provider doesn't support fetching token.")
@@ -31,7 +30,7 @@ ConfigurationValue {
     }
 
     function getUriTokenParam() {
-        switch (value) {
+        switch (getProviderName()) {
         case 'foreca':
             return '&token=';
         case 'open_weather':
@@ -42,5 +41,59 @@ ConfigurationValue {
         }
     }
 
-//    function get
+    function currentWeatherUrl(weather) {
+        switch (getProviderName()) {
+        case 'foreca':
+            return 'https://pfa.foreca.com/api/v1/current/' + weather.locationId;
+        case 'open_weather':
+            return '';
+        }
+    }
+
+    function latestObservation(weather) {
+        switch (getProviderName()) {
+        case 'foreca':
+            return "https://pfa.foreca.com/api/v1/observation/latest/";
+        case 'open_weather':
+            return '';
+        default:
+            console.log("Last observation url doesn't support for ", value);
+        }
+    }
+
+    function forecastUrl(weather, isHourly) {
+        switch (getProviderName()) {
+        case 'foreca':
+            return 'https://pfa.foreca.com/api/v1/forecast/' + (hourly ? "hourly/" : "daily/") + root.locationId;
+        case 'open_weather':
+            return '';
+        default:
+            console.log("Forecast url doesn't support for provider: ", value)
+        }
+    }
+
+    function externalUrl() {
+        switch (getProviderName()) {
+        case 'foreca':
+            return "http://foreca.mobi/spot.php?l=";
+        case 'open_weather':
+            return '';
+        default:
+            console.log("External URL doesn't support for provider: ", value);
+        }
+    }
+
+    function getProviderName() {
+        const splitValues = value.split(':');
+        return splitValues[0];
+    }
+
+    function getApiKey() {
+        const separatorIndex = value.indexOf(':')
+        if (separatorIndex === -1) {
+            return '';
+        }
+
+        return value.substring(separatorIndex + 1);
+    }
 }
