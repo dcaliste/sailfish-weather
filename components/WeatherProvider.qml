@@ -9,12 +9,15 @@ import QtQuick 2.2
 import Nemo.Configuration 1.0
 
 import "ForecaToken.js" as ForecaToken
+import "OpenWeatherModel.js" as OpenWeatherModel
+import "WeatherModel.js" as ForecaWeatherModel
 
 ConfigurationValue {
     key: "/sailfish/weather/data_provider"
     defaultValue: "foreca"
 
     property string token;
+    property var lastUpdate: new Date()
 
     function fetchToken(model) {
         switch (getProviderName()) {
@@ -34,7 +37,7 @@ ConfigurationValue {
         case 'foreca':
             return '&token=';
         case 'open_weather':
-            return '&api_key=';
+            return '&appId=';
         default:
             console.log("Uri token parameter doesn't support for value: ", value)
             return '';
@@ -46,7 +49,7 @@ ConfigurationValue {
         case 'foreca':
             return 'https://pfa.foreca.com/api/v1/current/' + weather.locationId;
         case 'open_weather':
-            return '';
+            return 'https://api.openweathermap.org/data/2.5/weather?units=metric&lat=' + weather.lat + "&lon=" + weather.lon;
         }
     }
 
@@ -55,7 +58,7 @@ ConfigurationValue {
         case 'foreca':
             return "https://pfa.foreca.com/api/v1/observation/latest/";
         case 'open_weather':
-            return '';
+            return 'https://api.openweathermap.org/data/2.5/weather?units=metric&lat=' + weather.lat + "&lon=" + weather.lon;
         default:
             console.log("Last observation url doesn't support for ", value);
         }
@@ -64,20 +67,55 @@ ConfigurationValue {
     function forecastUrl(weather, isHourly) {
         switch (getProviderName()) {
         case 'foreca':
-            return 'https://pfa.foreca.com/api/v1/forecast/' + (hourly ? "hourly/" : "daily/") + root.locationId;
+            return 'https://pfa.foreca.com/api/v1/forecast/' + (hourly ? "hourly/" : "daily/") + weather.locationId;
         case 'open_weather':
-            return '';
+            return 'https://api.openweathermap.org/data/2.5/forecast?units=metric&lat=' + weather.lat + "&lon=" + weather.lon + (isHourly ? "&cnt=7" : "");
         default:
             console.log("Forecast url doesn't support for provider: ", value)
+        }
+    }
+
+    function updateAllowed(interval) {
+        // only update automatically if more than <interval> minutes has
+        // passed since the last update (default 30mins: 30*60*1000)
+        // or the date has changed
+        interval = interval === undefined ? 30*60*1000 : interval
+        var now = new Date()
+        var updateAllowed = now.getDate() != lastUpdate.getDate() || (now - interval > lastUpdate)
+        if (updateAllowed) {
+            lastUpdate = now
+        }
+        return updateAllowed
+    }
+
+    function handleResult(result) {
+        switch (getProviderName()) {
+        case 'foreca':
+            return ForecaWeatherModel.handleResult(result);
+        case 'open_weather':
+            return OpenWeatherModel.handleResult(result);
+        default:
+            console.log("Get weather data doesn't support for ", getProviderName());
+        }
+    }
+
+    function getWeatherData(weather) {
+        switch (getProviderName()) {
+        case 'foreca':
+            return ForecaWeatherModel.getWeatherData(weather);
+        case 'open_weather':
+            return OpenWeatherModel.getWeatherData(weather);
+        default:
+            console.log("Get weather data doesn't support for ", getProviderName());
         }
     }
 
     function externalUrl() {
         switch (getProviderName()) {
         case 'foreca':
-            return "http://foreca.mobi/spot.php?l=";
+            return "https://foreca.mobi/spot.php?l=";
         case 'open_weather':
-            return '';
+            return 'https://openweathermap.org';
         default:
             console.log("External URL doesn't support for provider: ", value);
         }

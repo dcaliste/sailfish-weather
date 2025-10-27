@@ -60,5 +60,6 @@ PRE_TARGETDEPS += translations engineering_english
 INSTALLS += target import translations_install engineering_english_install
 
 DISTFILES += \
+    OpenWeatherModel.js \
     OpenWeatherProviderApiKey.qml \
     WeatherProvider.qml

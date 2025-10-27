@@ -1,27 +1,88 @@
-// SPDX-FileCopyrightText: 2014 - 2023 Jolla Ltd.
-// SPDX-FileCopyrightText: 2024 - 2025 Jolla Mobile Ltd
+// SPDX-FileCopyrightText: 2025 Jolla Mobile Ltd
 //
 // SPDX-License-Identifier: BSD-3-Clause
+//
+// @author Anton Turko <turok@duck.com>
 
 
 function handleResult(result) {
-
-    var current = result["current"]
-    if (result.length === 0 || current.temperature === "") {
+    if (result === undefined || result.main.temp === "") {
         return undefined;
     }
 
-    var weather = getWeatherData(current)
-    weather.timestamp =  new Date(current.time)
-    this.timestamp = weather.timestamp
-
-    weather.temperature = current.temperature
-    weather.feelsLikeTemperature = current.feelsLikeTemp
+    var weather = getWeatherData(result);
+    weather.timestamp = new Date(result.dt * 1000);
+    weather.temperature = result.main.temp;
+    weather.feelsLikeTemperature = result.main.feels_like;
     return weather;
 }
 
+function mapOpenWeatherToForeca(openWeatherId) {
+    switch(openWeatherId) {
+        case 800: return "000" // Clear
+        case 801: return "100" // Mostly clear
+        case 802: return "200" // Partly cloudy
+        case 803: return "300" // Cloudy
+        case 804: return "400" // Overcast
+        case 701: return "600" // Fog
+        case 711: return "600" // Fog
+        case 721: return "600" // Fog
+        case 731: return "600" // Fog
+        case 741: return "600" // Fog
+        case 751: return "600" // Fog
+        case 761: return "600" // Fog
+        case 762: return "600" // Fog
+        case 771: return "600" // Fog
+        case 781: return "600" // Fog
+        case 600: return "212" // Partly cloudy and light snow
+        case 601: return "312" // Cloudy and light snow
+        case 602: return "412" // Overcast and light snow
+        case 611: return "211" // sleet
+        case 612: return "311" // light shower sleet
+        case 613: return "411" // shower sleet
+        case 615: return "221" // light rain and snow
+        case 616: return "421" // rain and snow
+        case 620: return "222" // Partly cloudy and snow showers
+        case 621: return "322" // Cloudy and snow showers
+        case 622: return "422" // Overcast and snow showers
+        case 500: return "210" // Partly cloudy and light rain
+        case 501: return "310" // Cloudy and light rain
+        case 502: return "410" // Overcast and light rain
+        case 503: return "410" // Overcast and rain
+        case 504: return "420" // Overcast and light rain
+        case 511: return "410" // Overcast and light rain
+        case 520: return "220" // Partly cloudy and showers
+        case 521: return "320" // Cloudy and showers
+        case 522: return "420" // Overcast and showers
+        case 531: return "430" // Cloudy and showers
+        case 200: return "240" // Partly cloudy, possible thunderstorms with rain
+        case 201: return "340" // Cloudy, thunderstorms with rain
+        case 202: return "440" // Overcast, thunderstorms with rain
+        default: {
+            console.log("Mapping not found for openWeatherId: ", openWeatherId)
+            return null // No mapping found
+        }
+    }
+}
+
+function updateAllowed(interval) {
+    // only update automatically if more than <interval> minutes has
+    // passed since the last update (default 30mins: 30*60*1000)
+    // or the date has changed
+    interval = interval === undefined ? 30*60*1000 : interval
+    var now = new Date()
+    var updateAllowed = now.getDate() != lastUpdate.getDate() || (now - interval > lastUpdate)
+    if (updateAllowed) {
+        lastUpdate = now
+    }
+    return updateAllowed
+}
+
 function getWeatherData(weather) {
-    var precipitationRateCode = weather.symbol.charAt(2)
+    var id = weather.weather[0].id
+    var timeSymbol = weather.weather[0].icon.charAt(2)
+    var symbol = timeSymbol + mapOpenWeatherToForeca(id)
+    var precipitationRateCode = symbol.charAt(2)
     var precipitationRate = ""
     switch (precipitationRateCode) {
     case '0':
@@ -54,7 +115,7 @@ function getWeatherData(weather) {
         //% "None"
         precipitationType = qsTrId("weather-la-precipitationtype_none")
     } else {
-        var precipitationTypeCode = weather.symbol.charAt(3)
+        var precipitationTypeCode = symbol.charAt(3)
         switch (precipitationTypeCode) {
         case '0':
             //% "Rain"
@@ -75,9 +136,9 @@ function getWeatherData(weather) {
     }
 
     var data = {
-        "description": description(weather.symbol),
-        "weatherType": weatherType(weather.symbol),
-        "cloudiness": (100*parseInt(weather.symbol.charAt(1))/4),
+        "description": description(symbol),
+        "weatherType": weatherType(symbol),
+        "cloudiness": weather.clouds.all,
         "precipitationRate": precipitationRate,
         "precipitationType": precipitationType
     }

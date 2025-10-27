@@ -89,9 +89,9 @@ ApplicationSettings {
         id: providerApiKeyTextField
         visible: weatherDataProvider.value !== "foreca"
         text: weatherDataProvider.value.split(':')[1]
-        placeholderText: "Enter Api key..."
+        placeholderText: "Enter App ID..."
         onTextChanged: {
-            console.log("Entered Api key:", text)
+            console.log("Entered App ID:", text)
             weatherDataProvider.value = 'open_weather:' + text;
         }
     }

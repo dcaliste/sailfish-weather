@@ -5,7 +5,6 @@
 
 import QtQuick 2.0
 import Sailfish.Weather 1.0
-import "WeatherModel.js" as WeatherModel
 
 WeatherRequest {
     property var weather
@@ -47,34 +46,32 @@ WeatherRequest {
     source: locationId > 0 ? WeatherProvider.currentWeatherUrl(weather) : ""
 
     function updateAllowed() {
-        return status === Weather.Null || status === Weather.Error || WeatherModel.updateAllowed()
+        return status === Weather.Null || status === Weather.Error || WeatherProvider.updateAllowed()
     }
 
     onRequestFinished: {
-        var current = result["current"]
-        if (result.length === 0 || current.temperature === "") {
-            status = Weather.Error
-        } else {
-            var weather = WeatherModel.getWeatherData(current)
-            weather.timestamp =  new Date(current.time)
-            this.timestamp = weather.timestamp
+        var weather = WeatherProvider.handleResult(result);
 
-            weather.temperature = current.temperature
-            weather.feelsLikeTemperature = current.feelsLikeTemp
-            var json = {
-                "locationId": current.locationId,
-                "lat": current.lat,
-                "lon": current.lon,
-                "temperature": weather.temperature,
-                "feelsLikeTemperature": weather.feelsLikeTemperature,
-                "weatherType": weather.weatherType,
-                "description": weather.description,
-                "timestamp": weather.timestamp
-            }
-            latestObservation.weatherJson = json
-            latestObservation.requestedLocationId = locationId
-            latestObservation.active = true
+        if (weather === undefined) {
+            status = Weather.Error
+            return
         }
+
+        this.timestamp = weather.timestamp
+
+        var json = {
+            "locationId": weather.locationId,
+            "lat": weather.lat,
+            "lon": weather.lon,
+            "temperature": weather.temperature,
+            "feelsLikeTemperature": weather.feelsLikeTemperature,
+            "weatherType": weather.weatherType,
+            "description": weather.description,
+            "timestamp": weather.timestamp
+        }
+        latestObservation.weatherJson = json
+        latestObservation.requestedLocationId = locationId
+        latestObservation.active = true
     }
 
     onStatusChanged: {

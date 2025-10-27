@@ -5,7 +5,6 @@
 
 import QtQuick 2.0
 import Sailfish.Weather 1.0
-import "WeatherModel.js" as WeatherModel
 
 ListModel {
     id: root
@@ -41,7 +40,7 @@ ListModel {
         // update allowed every half hour for hourly weather, every 3 hours for daily weather
         property int maxUpdateInterval: hourly ? 30*60*1000 : 180*60*1000
         function updateAllowed() {
-            return status !== Weather.Unauthorized && (status === Weather.Error || status === Weather.Null || WeatherModel.updateAllowed(maxUpdateInterval))
+            return status !== Weather.Unauthorized && (status === Weather.Error || status === Weather.Null || WeatherProvider.updateAllowed(maxUpdateInterval))
         }
 
         onRequestFinished: {
@@ -52,7 +51,7 @@ ListModel {
                 var weatherData = []
                 for (var i = 0; i < forecast.length; i++) {
                     var data = forecast[i]
-                    var weather = WeatherModel.getWeatherData(data)
+                    var weather = WeatherProvider.getWeatherData(data)
                     if (hourly) {
                         if (i % 3 !== 0) continue
                         weather.timestamp =  new Date(data.time)
