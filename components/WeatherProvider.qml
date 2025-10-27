@@ -88,12 +88,23 @@ ConfigurationValue {
         return updateAllowed
     }
 
-    function handleResult(result) {
+    function handleCurrentWeatherResult(result) {
         switch (getProviderName()) {
         case 'foreca':
-            return ForecaWeatherModel.handleResult(result);
+            return ForecaWeatherModel.handleCurrentWeatherResult(result);
         case 'open_weather':
-            return OpenWeatherModel.handleResult(result);
+            return OpenWeatherModel.handleCurrentWeatherResult(result);
+        default:
+            console.log("Get weather data doesn't support for ", getProviderName());
+        }
+    }
+
+    function handleObservationResult(result) {
+        switch (getProviderName()) {
+        case 'foreca':
+            return ForecaWeatherModel.handleObservationResult(result);
+        case 'open_weather':
+            return OpenWeatherModel.handleObservationResult(result);
         default:
             console.log("Get weather data doesn't support for ", getProviderName());
         }

@@ -5,7 +5,7 @@
 // @author Anton Turko <turok@duck.com>
 
 
-function handleResult(result) {
+function handleCurrentWeatherResult(result) {
     if (result === undefined || result.main.temp === "") {
         return undefined;
     }
@@ -15,6 +15,14 @@ function handleResult(result) {
     weather.temperature = result.main.temp;
     weather.feelsLikeTemperature = result.main.feels_like;
     return weather;
+}
+
+function handleObservationResult(result) {
+    if (result === undefined) {
+        return "";
+    }
+
+    return result.name;
 }
 
 function mapOpenWeatherToForeca(openWeatherId) {

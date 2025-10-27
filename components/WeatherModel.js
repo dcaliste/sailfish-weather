@@ -4,7 +4,7 @@
 // SPDX-License-Identifier: BSD-3-Clause
 
 
-function handleResult(result) {
+function handleCurrentWeatherResult(result) {
 
     var current = result["current"]
     if (result.length === 0 || current.temperature === "") {
@@ -18,6 +18,16 @@ function handleResult(result) {
     weather.temperature = current.temperature
     weather.feelsLikeTemperature = current.feelsLikeTemp
     return weather;
+}
+
+
+function handleObservationResult(result) {
+    var observations = result["observations"]
+    if (observations.length > 0) {
+        return observations[0].station
+    }
+
+    return "";
 }
 
 function getWeatherData(weather) {

@@ -25,9 +25,13 @@ WeatherRequest {
             if (!weatherJson) return
 
             active = false;
-            var observations = result["observations"]
-            if (observations.length > 0) {
-                weatherJson["station"] = observations[0].station
+            var stationName = WeatherProvider.handleObservationResult(result);
+
+            console.log(stationName);
+            console.log(result);
+
+            if (stationName.length > 0) {
+                weatherJson["station"] = stationName
             }
             savedWeathersModel.update(requestedLocationId, weatherJson)
         }
@@ -37,7 +41,7 @@ WeatherRequest {
                 if (savedWeathers) {
                     savedWeathers.setErrorStatus(requestedLocationId, status)
                 }
-
+                console.log("lat, lon, locationId", weather.lat, weather.lon, weather.locationId);
                 console.log("WeatherModel - could not obtain weather station data", weather ? weather.city : "", weather ? weather.locationId : "")
             }
         }
@@ -50,7 +54,7 @@ WeatherRequest {
     }
 
     onRequestFinished: {
-        var weather = WeatherProvider.handleResult(result);
+        var weather = WeatherProvider.handleCurrentWeatherResult(result);
 
         if (weather === undefined) {
             status = Weather.Error
