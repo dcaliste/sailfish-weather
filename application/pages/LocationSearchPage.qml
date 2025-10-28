@@ -119,6 +119,8 @@ Page {
             onClicked: {
                 var location = {
                     "locationId": model.id,
+                    "lat": model.lat,
+                    "lon": model.lon,
                     "city": model.name,
                     "state": "",
                     "country": model.country,

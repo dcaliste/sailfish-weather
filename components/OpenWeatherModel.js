@@ -11,6 +11,8 @@ function handleCurrentWeatherResult(result) {
     }
 
     var weather = getWeatherData(result);
+    weather.lat = result.lat;
+    weather.lon = result.lon;
     weather.timestamp = new Date(result.dt * 1000);
     weather.temperature = result.main.temp;
     weather.feelsLikeTemperature = result.main.feels_like;

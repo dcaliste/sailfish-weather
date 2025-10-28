@@ -78,7 +78,8 @@ QtObject {
                     request = undefined
                 }
             }
-            request.open("GET", source + WeatherProvider.getUriTokenParam() + token)
+            const url = source + WeatherProvider.getUriTokenParam() + token;
+            request.open("GET", url)
             request.send()
         }
     }
