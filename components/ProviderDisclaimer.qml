@@ -5,6 +5,7 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import Sailfish.Weather 1.0
 
 BackgroundItem {
     id: root
@@ -28,7 +29,7 @@ BackgroundItem {
         }
         Image {
             anchors.horizontalCenter: parent.horizontalCenter
-            source: "image://theme/graphic-foreca-large?" + (highlighted ? Theme.highlightColor : Theme.primaryColor)
+            source: WeatherProvider.providerImage(highlighted ? Theme.highlightColor : Theme.primaryColor)
         }
         anchors {
             bottom: parent.bottom

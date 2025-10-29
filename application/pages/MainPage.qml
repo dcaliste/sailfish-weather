@@ -207,6 +207,8 @@ Page {
                                 if (!current || current.locationId !== model.locationId) {
                                     var weather = {
                                         "locationId": model.locationId,
+                                        "lat": model.lat,
+                                        "lon": model.lon,
                                         "city": model.city,
                                         "state": model.state,
                                         "adminArea": model.adminArea,

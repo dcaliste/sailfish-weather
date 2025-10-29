@@ -44,7 +44,7 @@ ListModel {
         }
 
         onRequestFinished: {
-            const weatherData = WeatherProvider.handleForecastResult(result, hourly, visibleCount, minimumHourlyRange);
+            var weatherData = WeatherProvider.handleForecastResult(result, hourly, visibleCount, minimumHourlyRange);
 
             if (weatherData === undefined) {
                 error = true
