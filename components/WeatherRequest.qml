@@ -79,6 +79,7 @@ QtObject {
                 }
             }
             const url = source + WeatherProvider.getUriTokenParam() + token;
+            console.log(url)
             request.open("GET", url)
             request.send()
         }

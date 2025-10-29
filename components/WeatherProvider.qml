@@ -58,7 +58,7 @@ ConfigurationValue {
         case 'foreca':
             return "https://pfa.foreca.com/api/v1/observation/latest/";
         case 'open_weather':
-            return 'https://api.openweathermap.org/data/2.5/weather?units=metric&lat=' + weather.lat + "&lon=" + weather.lon;
+            return 'https://api.openweathermap.org/data/2.5/weather?units=metric&lon=' + weather.lon + "&lat=" + weather.lat;
         default:
             console.log("Last observation url doesn't support for ", value);
         }
@@ -107,6 +107,17 @@ ConfigurationValue {
             return OpenWeatherModel.handleObservationResult(result);
         default:
             console.log("Get weather data doesn't support for ", getProviderName());
+        }
+    }
+
+    function handleForecastResult(result, isHourly, visibleCount, minimumHourlyRange) {
+        switch (getProviderName()) {
+        case 'foreca':
+            return ForecaWeatherModel.handleForecastResult(result, isHourly, visibleCount, minimumHourlyRange);
+        case 'open_weather':
+            return OpenWeatherModel.handleForecastResult(result, isHourly, visibleCount, minimumHourlyRange);
+        default:
+            console.log("Get forecast weather data doesn't support for ", getProviderName());
         }
     }
 

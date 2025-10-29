@@ -19,6 +19,92 @@ function handleCurrentWeatherResult(result) {
     return weather;
 }
 
+function handleForecastResult(result, hourly, visibleCount, minimumHourlyRange) {
+    var forecast = result.list;
+    if (result.length === 0 || forecast.length === 0) {
+        return undefined;
+    }
+
+    var weatherData = []
+    for (var i = 0; i < forecast.length; i++) {
+        var data = forecast[i]
+        var weather = getWeatherData(data)
+        weather.timestamp = new Date(data.dt * 1000)
+        weather.temperature = data.main.temp
+        if (!hourly) {
+            weather.accumulatedPrecipitation = data.main.humidity
+            weather.maximumWindSpeed = data.wind.speed
+            weather.windDirection = data.wind.deg
+            weather.high = data.main.temp_max
+            weather.low = data.main.temp_min
+        }
+        weatherData[weatherData.length] = weather
+    }
+
+    if (hourly) {
+        var minimumTemperature = weatherData[0].temperature
+        var maximumTemperature = weatherData[0].temperature
+        for (i = 1; i < visibleCount + 1; i++) {
+            var temperature = weatherData[i].temperature
+            minimumTemperature = Math.min(minimumTemperature, temperature)
+            maximumTemperature = Math.max(maximumTemperature, temperature)
+        }
+        var range = maximumTemperature - minimumTemperature
+        if (range < minimumHourlyRange) {
+            minimumTemperature -= Math.floor((minimumHourlyRange - range ) / 2)
+            range = minimumHourlyRange
+        }
+
+        for (i = 0; i < visibleCount + 1; i++) {
+            weatherData[i].relativeTemperature = (weatherData[i].temperature - minimumTemperature) / range
+        }
+    } else {
+        var groupedByDay = weatherData.reduce(function(container, weather) {
+            var timestamp = weather.timestamp
+            var year = timestamp.getFullYear()
+            var month = timestamp.getMonth()
+            var day = timestamp.getDate()
+            var key = [year, month, day].join("-")
+            if (!container[key]) {
+                container[key] = []
+            }
+            container[key].push(weather)
+            return container
+        }, {})
+
+        var weatherDayByDay = []
+        for(var date in groupedByDay) {
+            var weathers = groupedByDay[date]
+            minimumTemperature = weathers[0].temperature;
+            maximumTemperature = weathers[0].temperature;
+            for (i = 1; i < weathers.length; i++) {
+                temperature = weatherData[i].temperature
+                minimumTemperature = Math.min(minimumTemperature, temperature)
+                maximumTemperature = Math.max(maximumTemperature, temperature)
+            }
+            weather = weathers[0]
+            var middayDate = new Date(weather.timestamp)
+            middayDate.setHours(12)
+            middayDate.setMinutes(0)
+            var dateDiff = Math.abs(weathers[0].timestamp - middayDate)
+            for (i = 1; i < weathers.length; i++) {
+                var diff = Math.abs(weathers[i].timestamp - middayDate)
+                if (diff < dateDiff) {
+                    weather = weathers[i]
+                    dateDiff = diff
+                }
+            }
+            weather.high = maximumTemperature
+            weather.low = minimumTemperature
+            weatherDayByDay[weatherDayByDay.length] = weather
+        }
+
+        weatherData = weatherDayByDay
+    }
+
+    return weatherData;
+}
+
 function handleObservationResult(result) {
     if (result === undefined) {
         return "";
