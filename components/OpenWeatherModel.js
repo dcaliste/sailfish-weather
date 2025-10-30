@@ -92,8 +92,8 @@ function handleForecastResult(result, hourly, visibleCount, minimumHourlyRange) 
                     dateDiff = diff;
                 }
             }
-            weather.high = maximumTemperature;
-            weather.low = minimumTemperature;
+            weather.high = Math.floor(maximumTemperature);
+            weather.low = Math.round(minimumTemperature);
             weatherDayByDay[weatherDayByDay.length] = weather;
         }
 
