@@ -33,7 +33,7 @@ CoverBackground {
 
     CoverPlaceholder {
         visible: !ready
-        icon.source: "image://theme/graphic-foreca-large"
+        icon.source: WeatherProvider.providerImage()
         text: {
             if (!loaded) {
                 //% "Select location to check weather"

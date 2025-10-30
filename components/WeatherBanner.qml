@@ -339,8 +339,7 @@ ListItem {
 
                     Image {
                         anchors.verticalCenter: parent.verticalCenter
-                        source: "image://theme/graphic-foreca-small?"
-                                + (highlighted || footer.down ? Theme.highlightColor : Theme.primaryColor)
+                        source: WeatherProvider.smallProviderImage(highlighted || footer.down ? Theme.highlightColor : Theme.primaryColor)
                     }
                     Label {
                         //: Indicates when the shown forecast information was updated

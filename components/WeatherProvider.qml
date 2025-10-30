@@ -152,6 +152,15 @@ ConfigurationValue {
         }
     }
 
+    function smallProviderImage(color) {
+        switch (getProviderName()) {
+        case 'foreca':
+            return "image://theme/graphic-foreca-small?" + color;
+        case 'open_weather':
+            return "logo_white.png";
+        }
+    }
+
     function getProviderName() {
         const splitValues = value.split(':');
         return splitValues[0];
