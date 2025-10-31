@@ -41,7 +41,7 @@ ConfigurationValue {
         case Provider.Name.OPEN_WEATHER:
             return '&appId=';
         default:
-            console.log("Uri token parameter doesn't support for value: ", value)
+            console.log("Uri token parameter doesn't support by provider: ", getProviderName())
             return '';
         }
     }
@@ -62,7 +62,7 @@ ConfigurationValue {
         case Provider.Name.OPEN_WEATHER:
             return 'https://api.openweathermap.org/data/2.5/weather?units=metric&lon=' + weather.lon + "&lat=" + weather.lat;
         default:
-            console.log("Last observation url doesn't support for ", value);
+            console.log("Last observation url doesn't support by provider: ", getProviderName());
         }
     }
 
@@ -73,7 +73,18 @@ ConfigurationValue {
         case Provider.Name.OPEN_WEATHER:
             return 'https://api.openweathermap.org/data/2.5/forecast?units=metric&lat=' + weather.lat + "&lon=" + weather.lon + (isHourly ? "&cnt=7" : "");
         default:
-            console.log("Forecast url doesn't support for provider: ", value)
+            console.log("Forecast url doesn't support by provider: ", getProviderName())
+        }
+    }
+
+    function searchLocationUrl(filter, language) {
+        switch (getProviderName()) {
+        case Provider.Name.FORECA:
+            return "https://pfa.foreca.com/api/v1/location/search/" + filter.toLowerCase() + "&lang=" + language;
+        case Provider.Name.OPEN_WEATHER:
+            return "https://nominatim.openstreetmap.org/search?format=json&accept-language=" + language + "&city=" + filter.toLowerCase() ;
+        default:
+            console.log("search location url doesn't support by provider: ", getProviderName());
         }
     }
 
@@ -119,7 +130,18 @@ ConfigurationValue {
         case Provider.Name.OPEN_WEATHER:
             return OpenWeatherModel.handleForecastResult(result, isHourly, visibleCount, minimumHourlyRange);
         default:
-            console.log("Get forecast weather data doesn't support for ", getProviderName());
+            console.log("Handler forecast weather data doesn't support for ", getProviderName());
+        }
+    }
+
+    function handleSearchLocationResult(result) {
+        switch (getProviderName()) {
+        case Provider.Name.FORECA:
+            return ForecaWeatherModel.handleSearchLocationResult(result);
+        case Provider.Name.OPEN_WEATHER:
+            return OpenWeatherModel.handleSearchLocationResult(result);
+        default:
+            console.log("Handler search location doesn't support by ", getProviderName());
         }
     }
 
@@ -134,10 +156,10 @@ ConfigurationValue {
         }
     }
 
-    function externalUrl() {
+    function externalUrl(weather) {
         switch (getProviderName()) {
         case Provider.Name.FORECA:
-            return "https://foreca.mobi/spot.php?l=";
+            return "https://foreca.mobi/spot.php?l=" + weather.locationId;
         case Provider.Name.OPEN_WEATHER:
             return 'https://openweathermap.org';
         default:

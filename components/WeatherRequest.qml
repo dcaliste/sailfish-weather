@@ -14,6 +14,7 @@ QtObject {
     property int status: Weather.Null
     property string token
     property var request
+    property bool applyToken: true
 
     signal requestFinished(var result)
 
@@ -78,7 +79,7 @@ QtObject {
                     request = undefined
                 }
             }
-            const url = source + WeatherProvider.getUriTokenParam() + token;
+            const url = source + (applyToken ? WeatherProvider.getUriTokenParam() + token : "");
             request.open("GET", url)
             request.send()
         }

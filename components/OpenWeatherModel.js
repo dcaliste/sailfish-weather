@@ -104,6 +104,20 @@ function handleForecastResult(result, hourly, visibleCount, minimumHourlyRange) 
     return weatherData;
 }
 
+function handleSearchLocationResult(result) {
+    var locations = result
+    if (result === undefined || result.length === 0) {
+        return undefined
+    }
+
+    for (var i = 0; i < locations.length; i++) {
+        var location = locations[i]
+        location.id = location.place_id
+        location.country = location.display_name
+    }
+    return locations
+}
+
 function handleObservationResult(result) {
     if (result === undefined) {
         return "";

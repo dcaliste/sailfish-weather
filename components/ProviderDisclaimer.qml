@@ -14,7 +14,7 @@ BackgroundItem {
     property int topMargin: Theme.paddingLarge
     property int bottomMargin: 2*Theme.paddingLarge
 
-    onClicked: if (weather) Qt.openUrlExternally(WeatherProvider.externalUrl() + weather.locationId)
+    onClicked: if (weather) Qt.openUrlExternally(WeatherProvider.externalUrl(weather))
     height: column.height + topMargin + bottomMargin
     Column {
         id: column

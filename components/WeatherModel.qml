@@ -34,7 +34,7 @@ WeatherRequest {
         }
 
         onStatusChanged: {
-            if (status === Weather.Error || status == Weather.Unauthorized) {
+            if (status === Weather.Error || status === Weather.Unauthorized) {
                 if (savedWeathers) {
                     savedWeathers.setErrorStatus(requestedLocationId, status)
                 }
@@ -51,7 +51,6 @@ WeatherRequest {
 
     onRequestFinished: {
         var weatherData = WeatherProvider.handleCurrentWeatherResult(result);
-
         if (weatherData === undefined) {
             status = Weather.Error
             return
@@ -75,7 +74,7 @@ WeatherRequest {
     }
 
     onStatusChanged: {
-        if (status === Weather.Error || status == Weather.Unauthorized) {
+        if (status === Weather.Error || status === Weather.Unauthorized) {
             if (savedWeathers) {
                 savedWeathers.setErrorStatus(locationId, status)
             }

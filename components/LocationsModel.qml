@@ -20,6 +20,7 @@ ListModel {
 
     readonly property WeatherRequest model: WeatherRequest {
         id: model
+        applyToken: false
 
         property string language: {
             var locale = Qt.locale().name
@@ -30,24 +31,23 @@ ListModel {
             }
         }
 
-        source: filter.length > 0 ? "https://nominatim.openstreetmap.org/search?format=json&accept-language=" + language + "&city=" + filter.toLowerCase() : ""
+        source: filter.length > 0 ? WeatherProvider.searchLocationUrl(filter, language) : ""
         onRequestFinished: {
-            var locations = result
-            if (result.length === 0 || locations === undefined) {
+
+            const locations = WeatherProvider.handleSearchLocationResult(result);
+            if (locations === undefined) {
                 status = Weather.Error
-            } else {
-                while (root.count > locations.length) {
-                    root.remove(locations.length)
-                }
-                for (var i = 0; i < locations.length; i++) {
-                    var location = locations[i]
-                    location.id = location.place_id
-                    location.country = location.display_name
-                    if (i < root.count) {
-                        root.set(i, location)
-                    } else {
-                        root.append(location)
-                    }
+                return;
+            }
+            while (root.count > locations.length) {
+                root.remove(locations.length)
+            }
+            for (var i = 0; i < locations.length; i++) {
+                var location = locations[i];
+                if (i < root.count) {
+                    root.set(i, location)
+                } else {
+                    root.append(location)
                 }
             }
         }

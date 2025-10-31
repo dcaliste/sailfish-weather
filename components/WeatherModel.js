@@ -80,6 +80,10 @@ function handleForecastResult(result, hourly, visibleCount, minimumHourlyRange) 
     return weatherData;
 }
 
+function handleSearchLocationResult(result) {
+    return result["locations"];
+}
+
 function getWeatherData(weather) {
     var precipitationRateCode = weather.symbol.charAt(2)
     var precipitationRate = ""
