@@ -312,7 +312,7 @@ ListItem {
 
                 property bool down: pressed && containsMouse
 
-                onClicked: Qt.openUrlExternally("http://foreca.mobi/spot.php?l=" + savedWeathersModel.currentWeather.locationId)
+                onClicked: Qt.openUrlExternally(WeatherProvider.externalUrl(savedWeathersModel.currentWeather))
 
                 width: footerRow.width
                 height: footerRow.height + Theme.paddingSmall
