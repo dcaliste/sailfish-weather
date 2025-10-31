@@ -11,19 +11,20 @@ import Nemo.Configuration 1.0
 import "ForecaToken.js" as ForecaToken
 import "OpenWeatherModel.js" as OpenWeatherModel
 import "WeatherModel.js" as ForecaWeatherModel
+import "Provider.js" as Provider
 
 ConfigurationValue {
     key: "/sailfish/weather/data_provider"
-    defaultValue: "foreca"
+    defaultValue: Provider.Name.FORECA
 
     property string token;
     property var lastUpdate: new Date()
 
     function fetchToken(model) {
         switch (getProviderName()) {
-        case 'foreca':
+        case Provider.Name.FORECA:
             return ForecaToken.fetchToken(model)
-        case 'open_weather':
+        case Provider.Name.OPEN_WEATHER:
             model.token = getApiKey();
             return true;
         default:
@@ -34,9 +35,9 @@ ConfigurationValue {
 
     function getUriTokenParam() {
         switch (getProviderName()) {
-        case 'foreca':
+        case Provider.Name.FORECA:
             return '&token=';
-        case 'open_weather':
+        case Provider.Name.OPEN_WEATHER:
             return '&appId=';
         default:
             console.log("Uri token parameter doesn't support for value: ", value)
@@ -46,18 +47,18 @@ ConfigurationValue {
 
     function currentWeatherUrl(weather) {
         switch (getProviderName()) {
-        case 'foreca':
+        case Provider.Name.FORECA:
             return 'https://pfa.foreca.com/api/v1/current/' + weather.locationId;
-        case 'open_weather':
+        case Provider.Name.OPEN_WEATHER:
             return 'https://api.openweathermap.org/data/2.5/weather?units=metric&lat=' + weather.lat + "&lon=" + weather.lon;
         }
     }
 
     function latestObservation(weather) {
         switch (getProviderName()) {
-        case 'foreca':
+        case Provider.Name.FORECA:
             return "https://pfa.foreca.com/api/v1/observation/latest/";
-        case 'open_weather':
+        case Provider.Name.OPEN_WEATHER:
             return 'https://api.openweathermap.org/data/2.5/weather?units=metric&lon=' + weather.lon + "&lat=" + weather.lat;
         default:
             console.log("Last observation url doesn't support for ", value);
@@ -66,9 +67,9 @@ ConfigurationValue {
 
     function forecastUrl(weather, isHourly) {
         switch (getProviderName()) {
-        case 'foreca':
+        case Provider.Name.FORECA:
             return 'https://pfa.foreca.com/api/v1/forecast/' + (hourly ? "hourly/" : "daily/") + weather.locationId;
-        case 'open_weather':
+        case Provider.Name.OPEN_WEATHER:
             return 'https://api.openweathermap.org/data/2.5/forecast?units=metric&lat=' + weather.lat + "&lon=" + weather.lon + (isHourly ? "&cnt=7" : "");
         default:
             console.log("Forecast url doesn't support for provider: ", value)
@@ -90,9 +91,9 @@ ConfigurationValue {
 
     function handleCurrentWeatherResult(result) {
         switch (getProviderName()) {
-        case 'foreca':
+        case Provider.Name.FORECA:
             return ForecaWeatherModel.handleCurrentWeatherResult(result);
-        case 'open_weather':
+        case Provider.Name.OPEN_WEATHER:
             return OpenWeatherModel.handleCurrentWeatherResult(result);
         default:
             console.log("Get weather data doesn't support for ", getProviderName());
@@ -101,9 +102,9 @@ ConfigurationValue {
 
     function handleObservationResult(result) {
         switch (getProviderName()) {
-        case 'foreca':
+        case Provider.Name.FORECA:
             return ForecaWeatherModel.handleObservationResult(result);
-        case 'open_weather':
+        case Provider.Name.OPEN_WEATHER:
             return OpenWeatherModel.handleObservationResult(result);
         default:
             console.log("Get weather data doesn't support for ", getProviderName());
@@ -112,9 +113,9 @@ ConfigurationValue {
 
     function handleForecastResult(result, isHourly, visibleCount, minimumHourlyRange) {
         switch (getProviderName()) {
-        case 'foreca':
+        case Provider.Name.FORECA:
             return ForecaWeatherModel.handleForecastResult(result, isHourly, visibleCount, minimumHourlyRange);
-        case 'open_weather':
+        case Provider.Name.OPEN_WEATHER:
             return OpenWeatherModel.handleForecastResult(result, isHourly, visibleCount, minimumHourlyRange);
         default:
             console.log("Get forecast weather data doesn't support for ", getProviderName());
@@ -123,9 +124,9 @@ ConfigurationValue {
 
     function getWeatherData(weather) {
         switch (getProviderName()) {
-        case 'foreca':
+        case Provider.Name.FORECA:
             return ForecaWeatherModel.getWeatherData(weather);
-        case 'open_weather':
+        case Provider.Name.OPEN_WEATHER:
             return OpenWeatherModel.getWeatherData(weather);
         default:
             console.log("Get weather data doesn't support for ", getProviderName());
@@ -134,9 +135,9 @@ ConfigurationValue {
 
     function externalUrl() {
         switch (getProviderName()) {
-        case 'foreca':
+        case Provider.Name.FORECA:
             return "https://foreca.mobi/spot.php?l=";
-        case 'open_weather':
+        case Provider.Name.OPEN_WEATHER:
             return 'https://openweathermap.org';
         default:
             console.log("External URL doesn't support for provider: ", value);
@@ -145,18 +146,18 @@ ConfigurationValue {
 
     function providerImage(color) {
         switch (getProviderName()) {
-        case 'foreca':
+        case Provider.Name.FORECA:
             return "image://theme/graphic-foreca-large?" + color;
-        case 'open_weather':
+        case Provider.Name.OPEN_WEATHER:
             return "logo_color_white.png";
         }
     }
 
     function smallProviderImage(color) {
         switch (getProviderName()) {
-        case 'foreca':
+        case Provider.Name.FORECA:
             return "image://theme/graphic-foreca-small?" + color;
-        case 'open_weather':
+        case Provider.Name.OPEN_WEATHER:
             return "logo_white.png";
         }
     }

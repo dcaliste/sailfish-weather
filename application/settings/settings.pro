@@ -20,7 +20,7 @@ target.path = $$TARGETPATH
 settings_entries.files = sailfish-weather.json
 settings_entries.path = /usr/share/jolla-settings/entries
 
-settings_qml.files = *.qml
+settings_qml.files = *.qml ../../components/Provider.js
 settings_qml.path = /usr/share/jolla-settings/pages/sailfish-weather
 
 OTHER_FILES += \

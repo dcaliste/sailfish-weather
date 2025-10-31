@@ -8,6 +8,7 @@ import Sailfish.Silica 1.0
 import org.sailfishos.weather.settings 1.0
 import Nemo.Configuration 1.0
 import com.jolla.settings 1.0
+import "Provider.js" as Provider
 
 ApplicationSettings {
     id: root
@@ -19,7 +20,7 @@ ApplicationSettings {
     ConfigurationValue {
         id: weatherDataProvider
         key: "/sailfish/weather/data_provider"
-        defaultValue: "foreca"
+        defaultValue: Provider.Name.FORECA
     }
 
     ComboBox {
@@ -59,10 +60,10 @@ ApplicationSettings {
         Component.onCompleted: {
             var splitValues = weatherDataProvider.value.split(':')
             switch (splitValues[0]) {
-            case "foreca":
+            case Provider.Name.FORECA:
                 currentIndex = 0
                 break
-            case "open_weather":
+            case Provider.Name.OPEN_WEATHER:
                 currentIndex = 1
                 break
             default:
@@ -75,24 +76,24 @@ ApplicationSettings {
             MenuItem {
                 //% "Foreca"
                 text: qsTrId("weather_settings-me-foreca")
-                onClicked: weatherDataProvider.value = "foreca"
+                onClicked: weatherDataProvider.value = Provider.Name.FORECA
             }
             MenuItem {
                 //% "Open Weather"
                 text: qsTrId("weather_settings-me-open-weather")
-                onClicked: weatherDataProvider.value = "open_weather"
+                onClicked: weatherDataProvider.value = Provider.Name.OPEN_WEATHER
             }
         }
     }
 
     TextField {
         id: providerApiKeyTextField
-        visible: weatherDataProvider.value !== "foreca"
+        visible: weatherDataProvider.value !== Provider.Name.FORECA
         text: weatherDataProvider.value.split(':')[1]
         placeholderText: "Enter App ID..."
         onTextChanged: {
             console.log("Entered App ID:", text)
-            weatherDataProvider.value = 'open_weather:' + text;
+            weatherDataProvider.value = Provider.Name.OPEN_WEATHER + ':' + text;
         }
     }
 }

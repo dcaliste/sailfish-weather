@@ -56,7 +56,8 @@ function handleForecastResult(result, hourly, visibleCount, minimumHourlyRange) 
         }
 
         for (i = 0; i < visibleCount + 1; i++) {
-            weatherData[i].relativeTemperature = (weatherData[i].temperature - minimumTemperature) / range
+            weatherData[i].relativeTemperature = (weatherData[i].temperature - minimumTemperature) / range;
+            weatherData[i].temperature = Math.floor(weatherData[i].temperature);
         }
     } else {
         var groupedByDay = weatherData.reduce(function(container, weather) {
