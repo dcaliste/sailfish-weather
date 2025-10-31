@@ -339,7 +339,7 @@ ListItem {
 
                     Image {
                         anchors.verticalCenter: parent.verticalCenter
-                        source: WeatherProvider.smallProviderImage(highlighted || footer.down ? Theme.highlightColor : Theme.primaryColor)
+                        source: WeatherProvider.smallProviderImage(highlighted || footer.down)
                     }
                     Label {
                         //: Indicates when the shown forecast information was updated

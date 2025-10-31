@@ -33,7 +33,7 @@ CoverBackground {
 
     CoverPlaceholder {
         visible: !ready
-        icon.source: WeatherProvider.providerImage()
+        icon.source: WeatherProvider.providerImage(highlighted)
         text: {
             if (!loaded) {
                 //% "Select location to check weather"

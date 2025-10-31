@@ -29,7 +29,7 @@ BackgroundItem {
         }
         Image {
             anchors.horizontalCenter: parent.horizontalCenter
-            source: WeatherProvider.providerImage(highlighted ? Theme.highlightColor : Theme.primaryColor)
+            source: WeatherProvider.providerImage(highlighted)
         }
         anchors {
             bottom: parent.bottom

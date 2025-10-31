@@ -46,7 +46,7 @@ Item {
             bottomMargin: Math.round(Theme.paddingSmall/2)
             horizontalCenter: parent.horizontalCenter
         }
-        source: WeatherProvider.smallProviderImage("")
+        source: WeatherProvider.smallProviderImage(true)
     }
 
 }

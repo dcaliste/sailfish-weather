@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/images">
+        <file alias="open_weather_small_black">images/logo_black.png</file>
+        <file alias="open_weather_black">images/logo_color_black.png</file>
+        <file alias="open_weather_white">images/logo_color_white.png</file>
+        <file alias="open_weather_small_white">images/logo_white.png</file>
+    </qresource>
+</RCC>

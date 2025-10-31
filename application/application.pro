@@ -9,6 +9,9 @@ CONFIG += warn_on
 
 SOURCES += weather.cpp
 
+RESOURCES += \
+    application.qrc
+
 qml.files = weather.qml cover model pages ../LICENSES
 desktop.files = sailfish-weather.desktop
 
@@ -21,6 +24,7 @@ include(translations/translations.pri)
 OTHER_FILES = \
     org.sailfishos.weather.service \
     oneshot/sailfish-weather-move-data-to-new-location
+    ../images
 
 oneshot.files = oneshot/sailfish-weather-move-data-to-new-location
 oneshot.path  = /usr/lib/oneshot.d

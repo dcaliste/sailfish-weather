@@ -23,7 +23,7 @@ HEADERS += weather.h \
            savedweathersmodel.h \
            weatherlauncher.h
 
-import.files = *.qml *.js qmldir *.png
+import.files = *.qml *.js qmldir
 import.path = $$TARGETPATH
 target.path = $$TARGETPATH
 
@@ -61,10 +61,9 @@ INSTALLS += target import translations_install engineering_english_install
 
 DISTFILES += \
     Provider.js \
-    logo_black.png \
-    logo_color_black.png \
-    logo_color_white.png \
-    logo_white.png \
     OpenWeatherModel.js \
     OpenWeatherProviderApiKey.qml \
     WeatherProvider.qml
+
+RESOURCES += \
+    components.qrc

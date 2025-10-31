@@ -6,6 +6,7 @@
 
 pragma Singleton
 import QtQuick 2.2
+import Sailfish.Silica 1.0
 import Nemo.Configuration 1.0
 
 import "ForecaToken.js" as ForecaToken
@@ -144,21 +145,21 @@ ConfigurationValue {
         }
     }
 
-    function providerImage(color) {
+    function providerImage(isWhite) {
         switch (getProviderName()) {
         case Provider.Name.FORECA:
-            return "image://theme/graphic-foreca-large?" + color;
+            return "image://theme/graphic-foreca-large?" + isWhite ? Theme.highlightColor : Theme.primaryColor;
         case Provider.Name.OPEN_WEATHER:
-            return "logo_color_white.png";
+            return !isWhite ? "qrc:/images/open_weather_white" : "qrc:/images/open_weather_black";
         }
     }
 
-    function smallProviderImage(color) {
+    function smallProviderImage(isWhite) {
         switch (getProviderName()) {
         case Provider.Name.FORECA:
-            return "image://theme/graphic-foreca-small?" + color;
+            return "image://theme/graphic-foreca-small?" + isWhite ? Theme.highlightColor : Theme.primaryColor;
         case Provider.Name.OPEN_WEATHER:
-            return "logo_white.png";
+            return !isWhite ? "qrc:/images/open_weather_small_white" : "qrc:/images/open_weather_small_black";
         }
     }
 
