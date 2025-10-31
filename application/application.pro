@@ -24,7 +24,6 @@ include(translations/translations.pri)
 OTHER_FILES = \
     org.sailfishos.weather.service \
     oneshot/sailfish-weather-move-data-to-new-location
-    ../images
 
 oneshot.files = oneshot/sailfish-weather-move-data-to-new-location
 oneshot.path  = /usr/lib/oneshot.d
