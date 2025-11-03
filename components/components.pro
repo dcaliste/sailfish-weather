@@ -63,7 +63,8 @@ DISTFILES += \
     Provider.js \
     OpenWeatherModel.js \
     OpenWeatherProviderApiKey.qml \
-    WeatherProvider.qml
+    WeatherProvider.qml \
+    update-utils.js
 
 RESOURCES += \
     components.qrc

@@ -5,6 +5,7 @@
 
 import QtQuick 2.0
 import Sailfish.Weather 1.0
+import 'update-utils.js' as UpdateUtils
 
 WeatherRequest {
     property var weather
@@ -46,7 +47,7 @@ WeatherRequest {
     source: locationId > 0 ? WeatherProvider.currentWeatherUrl(weather) : ""
 
     function updateAllowed() {
-        return status === Weather.Null || status === Weather.Error || WeatherProvider.updateAllowed()
+        return status === Weather.Null || status === Weather.Error || UpdateUtils.updateAllowed()
     }
 
     onRequestFinished: {

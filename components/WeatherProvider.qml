@@ -18,9 +18,6 @@ ConfigurationValue {
     key: "/sailfish/weather/data_provider"
     defaultValue: Provider.Name.FORECA
 
-    property string token;
-    property var lastUpdate: new Date()
-
     function fetchToken(model) {
         switch (getProviderName()) {
         case Provider.Name.FORECA:
@@ -86,19 +83,6 @@ ConfigurationValue {
         default:
             console.log("search location url doesn't support by provider: ", getProviderName());
         }
-    }
-
-    function updateAllowed(interval) {
-        // only update automatically if more than <interval> minutes has
-        // passed since the last update (default 30mins: 30*60*1000)
-        // or the date has changed
-        interval = interval === undefined ? 30*60*1000 : interval
-        var now = new Date()
-        var updateAllowed = now.getDate() != lastUpdate.getDate() || (now - interval > lastUpdate)
-        if (updateAllowed) {
-            lastUpdate = now
-        }
-        return updateAllowed
     }
 
     function handleCurrentWeatherResult(result) {
