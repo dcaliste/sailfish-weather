@@ -164,9 +164,25 @@ function mapOpenWeatherToForeca(openWeatherId) {
         case 521: return "320" // Cloudy and showers
         case 522: return "420" // Overcast and showers
         case 531: return "430" // Cloudy and showers
+        case 300: return "210"
+        case 301: return "310"
+        case 302: return "410"
+        case 310: return "210"
+        case 311: return "310"
+        case 312: return "220"
+        case 313: return "320"
+        case 314: return "420"
+        case 314: return "430"
         case 200: return "240" // Partly cloudy, possible thunderstorms with rain
         case 201: return "340" // Cloudy, thunderstorms with rain
         case 202: return "440" // Overcast, thunderstorms with rain
+        case 210: return "240"
+        case 211: return "340"
+        case 212: return "440"
+        case 221: return "440"
+        case 230: return "240"
+        case 231: return "340"
+        case 232: return "440"
         default: {
             console.log("Mapping not found for openWeatherId: ", openWeatherId)
             return null // No mapping found
