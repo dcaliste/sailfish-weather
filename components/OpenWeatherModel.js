@@ -32,7 +32,7 @@ function handleForecastResult(result, hourly, visibleCount, minimumHourlyRange) 
         weather.timestamp = new Date(data.dt * 1000)
         weather.temperature = data.main.temp
         if (!hourly) {
-            weather.accumulatedPrecipitation = data.main.humidity
+            weather.accumulatedPrecipitation = data.rain === undefined ? data.snow === undefined ? 0 : data.snow["3h"] : data.rain["3h"]
             weather.maximumWindSpeed = data.wind.speed
             weather.windDirection = data.wind.deg
             weather.high = data.main.temp_max
@@ -77,6 +77,7 @@ function handleForecastResult(result, hourly, visibleCount, minimumHourlyRange) 
         for(var date in groupedByDay) {
             var weathers = groupedByDay[date];
             weather = weathers[0];
+            var precipitation = 0
             minimumTemperature = weather.temperature;
             maximumTemperature = weather.temperature;
             var middayDate = new Date(weather.timestamp);
@@ -84,6 +85,7 @@ function handleForecastResult(result, hourly, visibleCount, minimumHourlyRange) 
             middayDate.setMinutes(0);
             var dateDiff = Math.abs(weather.timestamp - middayDate);
             for (i = 1; i < weathers.length; i++) {
+                precipitation += weather.accumulatedPrecipitation
                 temperature = weathers[i].temperature;
                 minimumTemperature = Math.min(minimumTemperature, temperature);
                 maximumTemperature = Math.max(maximumTemperature, temperature);
@@ -93,6 +95,7 @@ function handleForecastResult(result, hourly, visibleCount, minimumHourlyRange) 
                     dateDiff = diff;
                 }
             }
+            weather.accumulatedPrecipitation = precipitation
             weather.high = Math.floor(maximumTemperature);
             weather.low = Math.round(minimumTemperature);
             weatherDayByDay[weatherDayByDay.length] = weather;
